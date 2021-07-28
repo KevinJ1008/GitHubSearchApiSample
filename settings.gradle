@@ -1,2 +1,4 @@
+include ':ImageLoader'
+include ':BaseCore'
 include ':app'
 rootProject.name = "GitHubSearchApiSample"

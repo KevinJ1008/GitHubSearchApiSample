@@ -1,0 +1,103 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+kapt {
+    correctErrorTypes = true
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.compileJavaVersion
+        targetCompatibility rootProject.ext.compileJavaVersion
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        def token = ""
+        if (project.rootProject.file('local.properties').exists()) {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream()) // load local.properties
+            token = properties.getProperty('token')
+        }
+
+        buildConfigField "String", "GITHUB_TOKEN", token
+    }
+
+    kotlinOptions {
+        jvmTarget = rootProject.ext.compileJavaVersion.toString()
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //----------------------------------------------------------------------------------------------
+    //Android Framework
+    //----------------------------------------------------------------------------------------------
+    api 'androidx.appcompat:appcompat:1.3.1'
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    //----------------------------------------------------------------------------------------------
+    //KTX
+    //----------------------------------------------------------------------------------------------
+    api 'androidx.core:core-ktx:1.6.0'
+    api "androidx.fragment:fragment-ktx:1.3.6"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
+
+    //----------------------------------------------------------------------------------------------
+    //3rd Library
+    //----------------------------------------------------------------------------------------------
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api "com.squareup.retrofit2:converter-gson:2.6.2"
+    api "com.google.code.gson:gson:2.8.6"
+
+    //----------------------------------------------------------------------------------------------
+    // Epoxy
+    //----------------------------------------------------------------------------------------------
+    api "com.airbnb.android:epoxy:$epoxyVersion"
+    // Add the annotation processor if you are using Epoxy's annotations (recommended)
+    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
+
+    //----------------------------------------------------------------------------------------------
+    // Jetpack
+    //----------------------------------------------------------------------------------------------
+    api "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycleVersion"
+
+    //----------------------------------------------------------------------------------------------
+    // Koin
+    //----------------------------------------------------------------------------------------------
+    api "io.insert-koin:koin-core:$koinVersion"
+    api "io.insert-koin:koin-android:$koinVersion"
+
+    //----------------------------------------------------------------------------------------------
+    // Coroutine
+    //----------------------------------------------------------------------------------------------
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+}
