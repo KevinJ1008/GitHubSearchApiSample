@@ -2,11 +2,11 @@ package com.kevin1008.basecore.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
 import com.kevin1008.basecore.BuildConfig
 
-abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity() {
+abstract class BaseActivity<VB: ViewBinding> : FragmentActivity() {
 
     private var _binding: ViewBinding? = null
     abstract val bindingInflater: (inflater: LayoutInflater) -> VB

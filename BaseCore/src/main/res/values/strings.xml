@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incomplete_result_error">Timeout from server might be happened, try again later.</string>
+</resources>

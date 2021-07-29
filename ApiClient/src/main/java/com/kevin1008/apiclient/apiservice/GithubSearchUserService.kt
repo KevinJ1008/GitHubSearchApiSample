@@ -1,5 +1,6 @@
-package com.kevin1008.githubsearchapisample.apiclients
+package com.kevin1008.apiclient.apiservice
 
+import com.kevin1008.apiclient.model.GitHubResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

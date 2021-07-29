@@ -1,7 +1,7 @@
 package com.kevin1008.githubsearchapisample.usecase
 
 import com.kevin1008.basecore.utils.Result
-import com.kevin1008.githubsearchapisample.apiclients.GitHubUser
+import com.kevin1008.apiclient.model.GitHubUser
 import com.kevin1008.githubsearchapisample.repository.SearchUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,5 +20,9 @@ class SearchUserUseCaseImpl(
             keyword
         }
         return@withContext searchUserRepository.getUsers(encodeKeyword)
+    }
+
+    override suspend fun getNextPage(): Result<List<GitHubUser>> = withContext(Dispatchers.IO) {
+        return@withContext searchUserRepository.getNextPage()
     }
 }

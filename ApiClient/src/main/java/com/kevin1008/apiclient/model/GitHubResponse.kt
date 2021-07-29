@@ -1,14 +1,17 @@
-package com.kevin1008.githubsearchapisample.apiclients
+package com.kevin1008.apiclient.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class GitHubResponse(
-    @SerializedName("incomplete_results") val inCompleteResult: Boolean,
+    @SerializedName("incomplete_results") val isInCompleteResult: Boolean,
     @SerializedName("items") val users: List<GitHubUser>?
 )
 
+@Parcelize
 data class GitHubUser(
     @SerializedName("login") val name: String?,
     @SerializedName("avatar_url") val avatar: String?,
     @SerializedName("type") val userType: String?
-)
+) : Parcelable

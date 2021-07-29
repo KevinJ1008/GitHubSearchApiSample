@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.kevin1008.basecore.BuildConfig
+import com.kevin1008.basecore.R
+import com.kevin1008.basecore.interfaces.BaseContract
+import com.kevin1008.basecore.utils.InCompleteResultError
+import com.kevin1008.basecore.utils.Result
 
-abstract class BaseFragment<VB: ViewBinding> : Fragment() {
+abstract class BaseFragment<VB: ViewBinding> : Fragment(), BaseContract {
 
     private var _binding: ViewBinding? = null
     abstract val bindingInflater: (inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean) -> VB
@@ -43,5 +48,24 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun handleError(error: Result.Error, callback: ((String?) -> Unit)?) {
+        when (error.exception) {
+            is InCompleteResultError -> {
+                if (error.isFetching) {
+                    Snackbar.make(requireView(), R.string.incomplete_result_error, Snackbar.LENGTH_SHORT).show()
+                } else {
+                    callback?.invoke(activity?.getString(R.string.incomplete_result_error))
+                }
+            }
+            else -> {
+                if (error.isFetching) {
+                    Snackbar.make(requireView(), error.exception.message.toString(), Snackbar.LENGTH_SHORT).show()
+                } else {
+                    callback?.invoke(error.exception.message)
+                }
+            }
+        }
     }
 }

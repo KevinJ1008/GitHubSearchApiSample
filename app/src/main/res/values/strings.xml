@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GitHubSearchApiSample</string>
+    <string name="input_hint_name">Enter username</string>
+    <string name="input_search">Search</string>
+    <string name="input_toast_name">You need to enter the name at least</string>
+    <string name="input_toast_email">You cannot search email domain</string>
+    <string name="input_name_title">Username:&#160;</string>
+    <string name="empty_view_retry">Retry</string>
+    <string name="empty_view_no_result">No result is satisfied</string>
 </resources>

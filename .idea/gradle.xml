@@ -11,6 +11,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ApiClient" />
             <option value="$PROJECT_DIR$/BaseCore" />
             <option value="$PROJECT_DIR$/ImageLoader" />
             <option value="$PROJECT_DIR$/app" />

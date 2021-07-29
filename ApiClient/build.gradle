@@ -1,7 +1,7 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
 kapt {
     correctErrorTypes = true
 }
@@ -16,13 +16,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kevin1008.githubsearchapisample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName rootProject.ext.versionName
-        versionCode rootProject.ext.versionCode
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -35,21 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = rootProject.ext.compileJavaVersion.toString()
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':BaseCore')
-    implementation project(':ImageLoader')
-    implementation project(':ApiClient')
-    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 }
