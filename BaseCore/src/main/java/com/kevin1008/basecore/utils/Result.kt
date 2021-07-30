@@ -6,3 +6,5 @@ sealed class Result<out T: Any> {
 }
 
 class InCompleteResultError : Error()
+
+class NoDataException : Exception()

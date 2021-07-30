@@ -5,6 +5,7 @@ import com.kevin1008.apiclient.model.GitHubUser
 import com.kevin1008.apiclient.apiservice.GithubSearchUserService
 import com.kevin1008.apiclient.model.GitHubResponse
 import com.kevin1008.basecore.utils.InCompleteResultError
+import com.kevin1008.basecore.utils.NoDataException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -40,10 +41,14 @@ class SearchUserRepositoryImpl(
                 if (response.body()?.isInCompleteResult == true) {
                     Result.Error(InCompleteResultError(), isFetching = isFetching)
                 } else {
-                    parseNextLink(response.headers()[LINK])
                     val data = response.body()?.users ?: emptyList()
                     userList.addAll(data)
-                    Result.Success(userList)
+                    if (userList.isEmpty()) {
+                        Result.Error(NoDataException())
+                    } else {
+                        parseNextLink(response.headers()[LINK])
+                        Result.Success(userList)
+                    }
                 }
             } else {
                 Result.Error(HttpException(response), isFetching = isFetching)

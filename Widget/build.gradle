@@ -1,7 +1,7 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
 kapt {
     correctErrorTypes = true
 }
@@ -10,19 +10,12 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    compileOptions {
-        sourceCompatibility rootProject.ext.compileJavaVersion
-        targetCompatibility rootProject.ext.compileJavaVersion
-    }
-
     defaultConfig {
-        applicationId "com.kevin1008.githubsearchapisample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName rootProject.ext.versionName
-        versionCode rootProject.ext.versionCode
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -45,9 +38,5 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':BaseCore')
-    implementation project(':ImageLoader')
-    implementation project(':ApiClient')
-    implementation project(':Widget')
-    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
 }

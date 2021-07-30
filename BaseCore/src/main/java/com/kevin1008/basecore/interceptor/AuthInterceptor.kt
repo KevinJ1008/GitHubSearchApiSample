@@ -23,6 +23,6 @@ class AuthInterceptor : Interceptor {
         private const val ACCEPT = "Accept"
         private const val ACCEPT_VALUE = "application/vnd.github.v3+json"
         private const val AUTHORIZATION = "Authorization"
-        private const val BEARER = "Bearer"
+        private const val BEARER = "Bearer "
     }
 }

@@ -7,5 +7,5 @@ interface BaseContract {
      * @param error to determine handle what error
      * @param callback to let subclass to show what they want
      */
-    fun handleError(error: Result.Error, callback: ((String?) -> Unit)? = null)
+    fun handleError(error: Result.Error, callback: ErrorCallback? = null)
 }

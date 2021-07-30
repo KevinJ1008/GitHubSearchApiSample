@@ -1,10 +1,11 @@
-package com.kevin1008.githubsearchapisample.widget
+package com.kevin1008.widget.customview
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.kevin1008.githubsearchapisample.databinding.LayoutEmptyViewBinding
+import androidx.core.view.isVisible
+import com.kevin1008.widget.databinding.LayoutEmptyViewBinding
 
 class EmptyView @JvmOverloads constructor(
     context: Context,
@@ -17,6 +18,7 @@ class EmptyView @JvmOverloads constructor(
         LayoutEmptyViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setOnRetryClickListener(clickListener: OnClickListener) {
+        binding.btnError.isVisible = true
         binding.btnError.setOnClickListener(clickListener)
     }
 
@@ -24,4 +26,7 @@ class EmptyView @JvmOverloads constructor(
         binding.textErrorTitle.text = title
     }
 
+    fun setButtonVisible(isVisible: Boolean) {
+        binding.btnError.isVisible = isVisible
+    }
 }

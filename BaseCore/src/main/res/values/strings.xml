@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="incomplete_result_error">Timeout from server might be happened, try again later.</string>
+    <string name="empty_view_no_result">No result is satisfied, please back to search again</string>
 </resources>

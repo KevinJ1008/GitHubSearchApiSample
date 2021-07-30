@@ -15,7 +15,7 @@ class RetrofitManager : RetrofitService {
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"
-        private const val TIMEOUT = 30L
+        private const val TIMEOUT = 10L
     }
 
     init {

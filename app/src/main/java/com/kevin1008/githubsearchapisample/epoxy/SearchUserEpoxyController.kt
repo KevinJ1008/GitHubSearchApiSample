@@ -7,6 +7,7 @@ import com.kevin1008.apiclient.model.GitHubUser
 
 class SearchUserEpoxyController : EpoxyController() {
 
+    var isLoading: Boolean = false
     private var list: List<GitHubUser>? = listOf()
 
     override fun buildModels() {
@@ -32,6 +33,7 @@ class SearchUserEpoxyController : EpoxyController() {
     }
 
     fun setUsers(users: List<GitHubUser>) {
+        isLoading = false
         list = users
         requestModelBuild()
     }

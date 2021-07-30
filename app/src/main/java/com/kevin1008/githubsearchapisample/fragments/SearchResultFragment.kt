@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kevin1008.basecore.base.BaseFragment
-import com.kevin1008.githubsearchapisample.R
+import com.kevin1008.basecore.utils.NoDataException
 import com.kevin1008.githubsearchapisample.databinding.FragmentSearchResultBinding
 import com.kevin1008.githubsearchapisample.epoxy.SearchUserEpoxyController
 import com.kevin1008.githubsearchapisample.viewmodel.SearchUserViewModel
-import com.kevin1008.githubsearchapisample.widget.EmptyView
+import com.kevin1008.widget.customview.EmptyView
+import com.kevin1008.widget.listener.LoadMoreListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
@@ -28,7 +30,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.recyclerview?.setController(epoxyController)
+        initViewSetting()
         registerObserver()
         if (savedInstanceState == null) {
             viewModel.getUsers(args.keyword)
@@ -48,9 +50,27 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         super.onDestroyView()
     }
 
+    override fun showCustomErrorView(message: String?, exception: Throwable?) {
+        super.showCustomErrorView(message, exception)
+        if (layoutEmpty == null) {
+            layoutEmpty = binding?.stubEmpty?.inflate() as? EmptyView?
+            layoutEmpty?.apply {
+                setTitle(message)
+                if (exception is NoDataException) {
+                    setButtonVisible(isVisible = false)
+                } else {
+                    setOnRetryClickListener {
+                        layoutEmpty?.isVisible = false
+                        viewModel.getUsers(args.keyword)
+                    }
+                }
+            }
+        }
+        layoutEmpty?.isVisible = true
+    }
+
     private fun registerObserver() {
         viewModel.searchUsers.observe(viewLifecycleOwner, {
-            //TODO: handle emptyList at first and fetching empty
             epoxyController.setUsers(it)
         })
         viewModel.isLoading.observe(viewLifecycleOwner, {
@@ -60,24 +80,25 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         })
         viewModel.loadingError.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.apply {
-                handleError(error = this) { message ->
-                    showErrorView(message)
-                }
+                handleError(error = this, callback = this@SearchResultFragment)
             }
         })
     }
 
-    private fun showErrorView(title: String?) {
-        if (layoutEmpty == null) {
-            layoutEmpty = binding?.stubEmpty?.inflate() as? EmptyView?
-            layoutEmpty?.apply {
-                setTitle(title)
-                setOnRetryClickListener {
-                    layoutEmpty?.isVisible = false
-                    viewModel.getUsers(args.keyword)
+    private fun initViewSetting() {
+        binding?.recyclerview?.apply {
+            this.setController(epoxyController)
+            val loadMoreListener = object : LoadMoreListener(layoutManager!!) {
+                override fun fetchNextPage() {
+                    epoxyController.isLoading = true
+                    viewModel.getNextPage()
+                }
+
+                override fun isLoading(): Boolean {
+                    return epoxyController.isLoading
                 }
             }
+            this.addOnScrollListener(loadMoreListener)
         }
-        layoutEmpty?.isVisible = true
     }
 }

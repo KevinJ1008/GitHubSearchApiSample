@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/ApiClient" />
             <option value="$PROJECT_DIR$/BaseCore" />
             <option value="$PROJECT_DIR$/ImageLoader" />
+            <option value="$PROJECT_DIR$/Widget" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
