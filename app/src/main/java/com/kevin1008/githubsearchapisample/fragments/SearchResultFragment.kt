@@ -21,6 +21,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
     private val args: SearchResultFragmentArgs by navArgs()
     private val epoxyController = SearchUserEpoxyController()
     private var layoutEmpty: EmptyView? = null
+    private var nextUrl: String = ""
 
     override val bindingInflater: (inflater: LayoutInflater,
                                    container: ViewGroup?,
@@ -34,6 +35,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         if (savedInstanceState == null) {
             viewModel.getUsers(args.keyword)
         } else {
+            nextUrl = savedInstanceState.getString(NEXT_URL, "")
             epoxyController.onRestoreInstanceState(savedInstanceState)
             epoxyController.requestModelBuild()
         }
@@ -41,6 +43,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString(NEXT_URL, nextUrl)
         epoxyController.onSaveInstanceState(outState)
     }
 
@@ -70,7 +73,10 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
 
     private fun registerObserver() {
         viewModel.searchUsers.observe(viewLifecycleOwner, {
-            epoxyController.setUsers(it)
+            it?.apply {
+                this@SearchResultFragment.nextUrl = this.nextUrl ?: ""
+                epoxyController.setUsers(this.users)
+            }
         })
         viewModel.isLoading.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.apply {
@@ -93,7 +99,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
 
                 override fun fetchNextPage() {
                     epoxyController.isLoading = true
-                    viewModel.getNextPage()
+                    viewModel.getNextPage(this@SearchResultFragment.nextUrl)
                 }
 
                 override fun isLoading(): Boolean {
@@ -102,5 +108,9 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
             }
             this.addOnScrollListener(loadMoreListener)
         }
+    }
+
+    companion object {
+        private const val NEXT_URL = "NEXT_URL"
     }
 }

@@ -7,6 +7,7 @@ import com.kevin1008.basecore.utils.toLiveData
 import com.kevin1008.basecore.base.BaseViewModel
 import com.kevin1008.apiclient.model.GitHubUser
 import com.kevin1008.basecore.utils.Event
+import com.kevin1008.githubsearchapisample.entity.UserEntity
 import com.kevin1008.githubsearchapisample.usecase.SearchUserUseCase
 import kotlinx.coroutines.launch
 
@@ -14,7 +15,7 @@ class SearchUserViewModel(
     private val searchUserUseCase: SearchUserUseCase
 ) : BaseViewModel() {
 
-    private val _searchUsers = MutableLiveData<List<GitHubUser>>()
+    private val _searchUsers = MutableLiveData<UserEntity>()
     val searchUsers = _searchUsers.toLiveData()
 
     private val _isLoading = MutableLiveData<Event<Boolean>>()
@@ -31,14 +32,14 @@ class SearchUserViewModel(
         }
     }
 
-    fun getNextPage() {
+    fun getNextPage(nextUrl: String) {
         viewModelScope.launch {
-            val result = searchUserUseCase.getNextPage()
+            val result = searchUserUseCase.getNextPage(nextUrl)
             handleResult(result = result)
         }
     }
 
-    private fun handleResult(result: Result<List<GitHubUser>>) {
+    private fun handleResult(result: Result<UserEntity>) {
         _isLoading.setValueWithSync(Event(content = false))
         when (result) {
             is Result.Success -> {

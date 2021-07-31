@@ -1,6 +1,6 @@
 package com.kevin1008.apiclient
 
-import com.kevin1008.apiclient.apiservice.GithubSearchUserService
+import com.kevin1008.apiclient.retrofitapiservice.GithubSearchUserService
 import com.kevin1008.basecore.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package com.kevin1008.apiclient.apiservice
+package com.kevin1008.apiclient.retrofitapiservice
 
 import com.kevin1008.apiclient.model.GitHubResponse
 import retrofit2.Response
