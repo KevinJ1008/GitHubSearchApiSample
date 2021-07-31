@@ -5,6 +5,14 @@ sealed class Result<out T: Any> {
     class Error(val exception: Throwable, val isFetching: Boolean = false) : Result<Nothing>()
 }
 
-class InCompleteResultError : Error()
+class APIException(val exceptionStatus: ExceptionStatus, val errorCode: Int? = null) : Exception() {
+    override fun toString(): String {
+        return exceptionStatus.message.toString()
+    }
+}
 
-class NoDataException : Exception()
+sealed class ExceptionStatus(val message: String?) {
+    object INCOMPLETE_RESULT_ERROR : ExceptionStatus("Get incomplete result, timeout from server may happened")
+    object NO_DATA_ERROR : ExceptionStatus("No data error")
+    class CUSTOM_ERROR(message: String?) : ExceptionStatus(message)
+}

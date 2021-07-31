@@ -1,6 +1,7 @@
 package com.kevin1008.githubsearchapisample.epoxy
 
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
@@ -29,6 +30,11 @@ abstract class SearchResultItemEpoxyModel : EpoxyModelWithHolder<SearchResultIte
         super.bind(holder)
         holder.avatar.loadImage(imageUrl, R.drawable.default_avatar)
         holder.type.text = userType
+        if (userType == ORG_TYPE) {
+            holder.type.background = ContextCompat.getDrawable(holder.view.context, R.drawable.bg_org_type)
+        } else {
+            holder.type.background = ContextCompat.getDrawable(holder.view.context, R.drawable.bg_user_type)
+        }
         holder.name.text = userName
     }
 
@@ -36,5 +42,9 @@ abstract class SearchResultItemEpoxyModel : EpoxyModelWithHolder<SearchResultIte
         val avatar by bind<ShapeableImageView>(R.id.img_avatar)
         val type by bind<TextView>(R.id.text_type)
         val name by bind<TextView>(R.id.text_name)
+    }
+
+    companion object {
+        private const val ORG_TYPE = "Organization"
     }
 }

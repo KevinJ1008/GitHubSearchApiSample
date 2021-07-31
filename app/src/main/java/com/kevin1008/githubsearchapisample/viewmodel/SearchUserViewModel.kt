@@ -7,7 +7,6 @@ import com.kevin1008.basecore.utils.toLiveData
 import com.kevin1008.basecore.base.BaseViewModel
 import com.kevin1008.apiclient.model.GitHubUser
 import com.kevin1008.basecore.utils.Event
-import com.kevin1008.basecore.utils.InCompleteResultError
 import com.kevin1008.githubsearchapisample.usecase.SearchUserUseCase
 import kotlinx.coroutines.launch
 

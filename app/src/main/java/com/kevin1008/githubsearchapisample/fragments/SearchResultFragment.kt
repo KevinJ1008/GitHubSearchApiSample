@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kevin1008.basecore.base.BaseFragment
-import com.kevin1008.basecore.utils.NoDataException
+import com.kevin1008.basecore.utils.ExceptionStatus
 import com.kevin1008.githubsearchapisample.databinding.FragmentSearchResultBinding
 import com.kevin1008.githubsearchapisample.epoxy.SearchUserEpoxyController
 import com.kevin1008.githubsearchapisample.viewmodel.SearchUserViewModel
@@ -50,13 +49,13 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         super.onDestroyView()
     }
 
-    override fun showCustomErrorView(message: String?, exception: Throwable?) {
-        super.showCustomErrorView(message, exception)
+    override fun showCustomErrorView(message: String?, exceptionStatus: ExceptionStatus?) {
+        super.showCustomErrorView(message, exceptionStatus)
         if (layoutEmpty == null) {
             layoutEmpty = binding?.stubEmpty?.inflate() as? EmptyView?
             layoutEmpty?.apply {
                 setTitle(message)
-                if (exception is NoDataException) {
+                if (exceptionStatus is ExceptionStatus.NO_DATA_ERROR) {
                     setButtonVisible(isVisible = false)
                 } else {
                     setOnRetryClickListener {
@@ -80,6 +79,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         })
         viewModel.loadingError.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.apply {
+                epoxyController.isLoading = false
                 handleError(error = this, callback = this@SearchResultFragment)
             }
         })
@@ -89,6 +89,8 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>() {
         binding?.recyclerview?.apply {
             this.setController(epoxyController)
             val loadMoreListener = object : LoadMoreListener(layoutManager!!) {
+                override var visibleThreshold: Int = 10
+
                 override fun fetchNextPage() {
                     epoxyController.isLoading = true
                     viewModel.getNextPage()

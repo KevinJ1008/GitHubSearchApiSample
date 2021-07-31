@@ -1,35 +1,18 @@
 package com.kevin1008.basecore.base
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
-import androidx.viewbinding.ViewBinding
-import com.kevin1008.basecore.BuildConfig
+import com.kevin1008.basecore.interfaces.BaseContract
+import com.kevin1008.basecore.interfaces.ErrorCallback
+import com.kevin1008.basecore.utils.ExceptionStatus
+import com.kevin1008.basecore.utils.Result
 
-abstract class BaseActivity<VB: ViewBinding> : FragmentActivity() {
+abstract class BaseActivity : FragmentActivity(), BaseContract, ErrorCallback {
 
-    private var _binding: ViewBinding? = null
-    abstract val bindingInflater: (inflater: LayoutInflater) -> VB
-
-    @Suppress("UNCHECKED_CAST")
-    protected val binding: VB?
-        get() {
-            if (BuildConfig.DEBUG) {
-                //You should not call your view in background thread or in some anonymous classes if
-                // not release when your lifecycle owner is destroy
-                return _binding as VB
-            }
-            return _binding as? VB
-        }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = bindingInflater.invoke(layoutInflater)
-        setContentView(_binding!!.root)
+    override fun handleError(error: Result.Error, callback: ErrorCallback?) {
+        //Haven't defined, could define base behavior if need
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    override fun showCustomErrorView(message: String?, exceptionStatus: ExceptionStatus?) {
+        //interface for descendant to override to handle some customize view behavior
     }
 }

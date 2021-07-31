@@ -9,6 +9,10 @@ data class GitHubResponse(
     @SerializedName("items") val users: List<GitHubUser>?
 )
 
+data class ErrorResponse(
+    @SerializedName("message") val message: String?
+)
+
 @Parcelize
 data class GitHubUser(
     @SerializedName("login") val name: String?,
