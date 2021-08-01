@@ -14,6 +14,6 @@ class APIException(val exceptionStatus: ExceptionStatus, val errorCode: Int? = n
 sealed class ExceptionStatus(val message: String?) {
     object INCOMPLETE_RESULT_ERROR : ExceptionStatus("Get incomplete result, timeout from server may happened")
     object NO_DATA_ERROR : ExceptionStatus("No data error")
-    object UNKNOWN_ERROR : ExceptionStatus("Unknown error")
+    object UNKNOWN_ERROR : ExceptionStatus("Unknown error occurred, please try again later")
     class CUSTOM_ERROR(message: String?) : ExceptionStatus(message)
 }

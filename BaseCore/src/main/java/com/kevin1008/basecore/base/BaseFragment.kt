@@ -109,7 +109,8 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment(), BaseContract, ErrorCa
                 callback?.showCustomErrorView(activity?.getString(R.string.empty_view_no_result),
                     exceptionStatus = exception.exceptionStatus)
             }
-            is ExceptionStatus.CUSTOM_ERROR -> {
+            is ExceptionStatus.CUSTOM_ERROR,
+            ExceptionStatus.UNKNOWN_ERROR -> {
                 if (isFetching) {
                     Snackbar.make(requireView(), exception.exceptionStatus.message.toString(),
                         Snackbar.LENGTH_SHORT).show()

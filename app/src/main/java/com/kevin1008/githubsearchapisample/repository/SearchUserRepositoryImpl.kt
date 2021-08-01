@@ -54,7 +54,7 @@ class SearchUserRepositoryImpl(
                     response.code()), isFetching = isFetching)
             }
         } else {
-            Result.Error(APIException(ExceptionStatus.UNKNOWN_ERROR))
+            Result.Error(APIException(ExceptionStatus.UNKNOWN_ERROR), isFetching = isFetching)
         }
     }
 
