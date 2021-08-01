@@ -12,6 +12,7 @@ import com.kevin1008.githubsearchapisample.repository.SearchUserRepositoryImpl
 import com.kevin1008.githubsearchapisample.usecase.SearchUserUseCase
 import com.kevin1008.githubsearchapisample.usecase.SearchUserUseCaseImpl
 import com.kevin1008.githubsearchapisample.viewmodel.SearchUserViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Response
 
@@ -36,5 +37,5 @@ val useCaseModule = module {
 }
 
 val viewModelModule = module {
-    factory { SearchUserViewModel(get()) }
+    viewModel { SearchUserViewModel(get()) }
 }
